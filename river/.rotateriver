@@ -1,0 +1,20 @@
+#!/bin/sh
+MIN=1
+MAX=10
+CURRENT=$MIN
+while true
+do
+  rm -f river.txt
+  if [ ! -f .river$CURRENT.txt ]
+  then
+    exit
+  fi
+  ln .river$CURRENT.txt river.txt
+  inotifywait river.txt 1>/dev/null 2>/dev/null
+  CURRENT=`expr $CURRENT + 1`
+  if [ $CURRENT -gt $MAX ] 
+  then
+    CURRENT=$MIN
+  fi
+done  
+
