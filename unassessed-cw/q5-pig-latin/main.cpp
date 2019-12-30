@@ -39,8 +39,17 @@ int main() {
   translateWord("Banana", translated);
   cout << "In Pig Latin 'Banana' is '" << translated << "'." << endl;
   translateWord("Yellow", translated);
-  cout << "In Pig Latin 'Yellow' is '" << translated << "'." << endl;
-  cout << endl;
+  cout << "In Pig Latin 'Yellow' is '" << translated << "'." << endl;  
+  translateWord("grrr", translated);
+  cout << "In Pig Latin 'grrr' is '" << translated << "'." << endl;
+  translateWord("apple", translated);
+  cout << "In Pig Latin 'apple' is '" << translated << "'." << endl;
+    translateWord("crying", translated);
+  cout << "In Pig Latin 'crying' is '" << translated << "'." << endl;
+    translateWord("strong", translated);
+  cout << "In Pig Latin 'strong' is '" << translated << "'." << endl;
+   translateWord("300", translated);
+  cout << "In Pig Latin '300' is '" << translated << "'." << endl;
 
   /* QUESTION 3 */
   
