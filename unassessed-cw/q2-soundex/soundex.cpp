@@ -47,13 +47,11 @@ int count(const char* const surname, const char* const sentence) {
     int end = start;
 
     while (sentence[start] != '\0') {
-
         if (!isalpha(sentence[start])) {
             start++;
             continue;
         }
-        // create 1 word from sentence. Mutate sentence to remove 1st word.
-        // try remove usage of i
+
         end = start;
         while (isalpha(sentence[end + 1])) {
             end++;
