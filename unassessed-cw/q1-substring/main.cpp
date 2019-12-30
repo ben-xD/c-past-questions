@@ -12,7 +12,6 @@ int main() {
   cout << substring_position("exercise", "this is a simple exercise") << endl;
   cout << substring_position("simple exercise", "this is a simple") << endl;
   cout << substring_position("", "this is a simple exercise") << endl;
-  cout << substring_position("bob", "this is a simple exercise") << endl;
   cout << substring_position("", "") << endl;
   return 0;
 }
