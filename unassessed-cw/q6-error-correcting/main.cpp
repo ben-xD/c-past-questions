@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #include "correct.h"
 
 using namespace std;
