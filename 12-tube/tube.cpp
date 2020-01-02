@@ -204,21 +204,31 @@ int validate_route(char** map, int height, int width, const char* start_station,
   int row, column;
   get_symbol_position(map, height, width, symbol, row, column);
 
-  int line_changes = 0;
+  int line_changes = -1;
   char current_line;
 
   while (strlen(route)) {
+    if (*route == '\0') {
+      return line_changes;
+    }
+    if (!isalnum(*route)) {
+      route++;
+    }
+
     char string_direction[3];
     if (isalpha(route[0])) {
       if (isalpha(route[1])) {
         strncpy(string_direction, route, 2);
+        string_direction[2] = '\0';
+        route+=2;
+      } else {
+        strncpy(string_direction, route, 1);
+        string_direction[1] = '\0';
+        route+=1;
       }
-      strncpy(string_direction, route, 1);
     }
 
-
     Direction direction = string_to_direction(string_direction);
-    std::cout << "string direction:" << string_direction << ", direction:" << direction << std::endl;
     if (direction == INVALID_DIRECTION) {
       return ERROR_INVALID_DIRECTION;
     }
@@ -227,27 +237,29 @@ int validate_route(char** map, int height, int width, const char* start_station,
     int next_row = row;
     int next_col = column;
     if (direction == N || direction == NW || direction == NE) {
-      next_col--;
-    }
-    if (direction == S || direction == SW || direction == SE) {
-      next_col++;
-    }
-    if (direction == W || direction == SW || direction == NW) {
       next_row--;
     }
-    if (direction == E || direction == SE || direction == NE) {
+    if (direction == S || direction == SW || direction == SE) {
       next_row++;
     }
+    if (direction == W || direction == SW || direction == NW) {
+      next_col--;
+    }
+    if (direction == E || direction == SE || direction == NE) {
+      next_col++;
+    }
 
-    if (next_row >= width || next_row < 0 || next_col >= height || next_col < 0) {
+    if (next_row >= height || next_row < 0 || next_col >= width || next_col < 0) {
       return ERROR_OUT_OF_BOUNDS;
     }
     if (map[next_row][next_col] == ' ') {
      return ERROR_OFF_TRACK;
     }
 
+    std::cout << next_row << ", next col: " << next_col << std::endl;
+
     // cannot directly change from line to line. need to go through station
-    if (!isalnum(map[next_row][next_col]) && map[row][column] != map[next_row][next_col]) {
+    if (!isalnum(map[row][column]) && !isalnum(map[next_row][next_col]) && map[row][column] != map[next_row][next_col]) {
       return ERROR_LINE_HOPPING_BETWEEN_STATIONS;
     }
     if (!isalnum(map[row][column])) {
@@ -257,20 +269,18 @@ int validate_route(char** map, int height, int width, const char* start_station,
       current_line = map[row][column];
     }
 
-    // TODO store array of visited track coordinates? or use a stack?
+    // or use a stack?/ recursion?
+    // or check for 'opposite' moves (don't allow W if E)
+    // store visited locations since station
     // if (isalnum(map[next_row][next_col])) {
     //   // clear stored track if station
-    // } else if (next_row, next_column already in stored track) {
+    // } else if (next_row, next_col already in stored track) {
     //   return ERROR_BACKTRACKING_BETWEEN_STATIONS;
     // }
 
     // move
     row = next_row;
     column = next_col;
-
-    while (!isalpha(*route) && *route == '\0') {
-      route++; // skip whitespace, commas
-    }
   }
 
   // check destination. If station, return

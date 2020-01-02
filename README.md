@@ -7,3 +7,7 @@ e.g. Spell checker mock test done on 10/12/2019. All unassessed coursework quest
 - Q3-palindrome/anagram: Requires sorting algorithm
 - Q5-Piglatin: Reading in characters (.get()) worked well. Reading in words (>>) went badly.
 - Q2-soundex: Count function logic is messy
+
+## Useful resources:
+- Ascii tables
+- [C-string functions](https://fresh2refresh.com/c-programming/c-strings/c-strrev-function/)
