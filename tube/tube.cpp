@@ -6,9 +6,14 @@
 #include <cctype>
 #include <cstdlib>
 
+#include <iostream>
+
 using namespace std;
 
 #include "tube.h"
+
+void set_station_from_symbol(char symbol, char* destination);
+
 
 /* You are pre-supplied with the functions below. Add your own 
    function definitions to the end of this file. */
@@ -129,4 +134,170 @@ Direction string_to_direction(const char *token) {
       return (Direction) n;
   }
   return INVALID_DIRECTION;
+}
+
+// TODO switch to const refs, for efficiency? check perf
+bool get_symbol_position(char** map, int height, int width, char target, int& row, int& column) {
+  for (row = 0; row < height; row++) {
+    for (column = 0; column < width; column++) {
+      if (map[row][column] == target) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+bool get_symbol_for_station(const char* name, char& symbol_return) {
+  std::ifstream file;
+  file.open("stations.txt");
+  char station_name[512];
+  char symbol;
+  while(file.good()) {
+    file >> symbol;
+    file.ignore(1);
+    file.getline(station_name, 512);
+    if (!strcmp(station_name, name)) {
+      symbol_return = symbol;
+      file.close();
+      return true;
+    }
+  }
+  file.close();
+  return false;
+}
+
+bool get_symbol_for_line(const char* name, char& symbol_return) {
+  std::ifstream file;
+  file.open("lines.txt");
+  char line_name[512];
+  char symbol;
+  while(file.good()) {
+    file >> symbol;
+    file.ignore(1);
+    file.getline(line_name, 512);
+    if (!strcmp(name, line_name)) {
+      symbol_return = symbol;
+      file.close();
+      return true;
+    }
+  }
+  file.close();
+  return false;
+}
+
+char get_symbol_for_station_or_line(const char* name) {
+  char symbol = '_';
+  get_symbol_for_station(name, symbol);
+  get_symbol_for_line(name, symbol);
+  return symbol;
+}
+
+// returns #line changes
+int validate_route(char** map, int height, int width, const char* start_station, const char* route, char* destination) {
+  // validate start station: get symbol, check if station
+  char symbol;
+  if (!get_symbol_for_station(start_station, symbol)) {
+    return ERROR_START_STATION_INVALID;
+  }
+  
+  int row, column;
+  get_symbol_position(map, height, width, symbol, row, column);
+
+  int line_changes = 0;
+  char current_line;
+
+  while (strlen(route)) {
+    char string_direction[3];
+    if (isalpha(route[0])) {
+      if (isalpha(route[1])) {
+        strncpy(string_direction, route, 2);
+      }
+      strncpy(string_direction, route, 1);
+    }
+
+
+    Direction direction = string_to_direction(string_direction);
+    std::cout << "string direction:" << string_direction << ", direction:" << direction << std::endl;
+    if (direction == INVALID_DIRECTION) {
+      return ERROR_INVALID_DIRECTION;
+    }
+
+    // Move piece in direction.
+    int next_row = row;
+    int next_col = column;
+    if (direction == N || direction == NW || direction == NE) {
+      next_col--;
+    }
+    if (direction == S || direction == SW || direction == SE) {
+      next_col++;
+    }
+    if (direction == W || direction == SW || direction == NW) {
+      next_row--;
+    }
+    if (direction == E || direction == SE || direction == NE) {
+      next_row++;
+    }
+
+    if (next_row >= width || next_row < 0 || next_col >= height || next_col < 0) {
+      return ERROR_OUT_OF_BOUNDS;
+    }
+    if (map[next_row][next_col] == ' ') {
+     return ERROR_OFF_TRACK;
+    }
+
+    // cannot directly change from line to line. need to go through station
+    if (!isalnum(map[next_row][next_col]) && map[row][column] != map[next_row][next_col]) {
+      return ERROR_LINE_HOPPING_BETWEEN_STATIONS;
+    }
+    if (!isalnum(map[row][column])) {
+      if (current_line != map[row][column]) {
+        line_changes++;
+      }
+      current_line = map[row][column];
+    }
+
+    // TODO store array of visited track coordinates? or use a stack?
+    // if (isalnum(map[next_row][next_col])) {
+    //   // clear stored track if station
+    // } else if (next_row, next_column already in stored track) {
+    //   return ERROR_BACKTRACKING_BETWEEN_STATIONS;
+    // }
+
+    // move
+    row = next_row;
+    column = next_col;
+
+    while (!isalpha(*route) && *route == '\0') {
+      route++; // skip whitespace, commas
+    }
+  }
+
+  // check destination. If station, return
+  if (!isalnum(map[row][column])) {
+    return ERROR_ROUTE_ENDPOINT_IS_NOT_STATION;
+  }
+  // Set destination to be station.
+  set_station_from_symbol(symbol, destination);
+  
+  return line_changes;
+}
+
+void set_station_from_symbol(char symbol, char* destination) {
+    // get station name for symbol from file.
+  std::ifstream file;
+  file.open("stations.txt");
+
+  char symbolInput;
+  char name[512];
+  
+  while (file.good()) {
+    file >> symbolInput;
+    file.ignore(1);
+    file >> name;
+    if (symbolInput == symbol) {
+      strcpy(destination, name);
+      break;
+    } 
+  }
 }
