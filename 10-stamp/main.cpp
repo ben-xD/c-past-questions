@@ -70,6 +70,7 @@ int main()
   if (!success)
     cout << "There was an error reading the file." << endl;
   cout << endl;
+  std::cout << digest;
 
   cout << "====================== Question 3 ======================" << endl << endl;
   
