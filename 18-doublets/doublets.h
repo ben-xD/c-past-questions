@@ -7,3 +7,7 @@ bool dictionary_search(const char *word);
 
 /* add your function prototypes here */
 
+bool valid_step(const char* current, const char* next);
+bool display_chain(const char** chain, std::ostream& output);
+bool valid_chain(const char** chain);
+bool find_chain(const char* start, const char* end, const char** answer_chain, int max_steps, int index = 0);
