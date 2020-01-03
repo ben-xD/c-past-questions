@@ -123,5 +123,6 @@ bool find_chain(const char* start, const char* end, const char** answer_chain, i
     word[char_index] = initial_character; // reset word
     answer_chain[index + 1] = NULL;
   }
+  delete [] word;
   return false;
 }
