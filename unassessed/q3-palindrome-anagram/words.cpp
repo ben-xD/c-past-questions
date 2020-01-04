@@ -37,7 +37,7 @@ int palindrome(const char* str) {
     return result;
 }
 
-// TODO try other sorting algorithms (merge sort, selection sort, bubble sort, insertion)
+// Bubble sort: the first element in list, is compared with each element in the list, it is moved if its bigger. Repeated n-times, where n is the list size. 
 void sort(char* str1) {
     for (int iter = 0; iter < strlen(str1); iter++) {
         for (int i = 0; i < strlen(str1) - 1; i++) {
@@ -49,6 +49,14 @@ void sort(char* str1) {
         }
     }
 }
+
+// selection sort: pick the smallest in the unsorted list, and put it last in the sorted list.
+
+// insertion sort: pick the first (or random) element in unsorted list, and insert in the right place.
+
+// merge sort: 
+
+// quick sort
 
 int anagram(const char* str1, const char* str2) {
     // sort characters in both

@@ -64,16 +64,11 @@ bool file_to_SHA1_digest(const char* filename, char* digest) {
     return false;
   }
   
-  // TODO
-  // read entire file. how??
-  // didnt know how to do this without SO
   file.seekg(0, file.end);
   int size = file.tellg();
   file.seekg(0, file.beg);
   char* contents = new char[size];
-
   file.read(contents, size);
-  // std::cout << contents << std::endl;
   
   text_to_SHA1_digest(contents, digest);
   file.close();
