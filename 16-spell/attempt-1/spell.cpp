@@ -65,11 +65,10 @@ bool spell_correct(const char* word, char* fixed) {
             best_count = current_count;
             best_d = d;
         }
-        else if (d <= 2 && d == best_d && current_count < best_count)
+        else if (d <= 2 && d == best_d && current_count > best_count)
         {
             strcpy(fixed, current_word);
             best_count = current_count;
-            best_d = d;
         }
     }
     f.close();

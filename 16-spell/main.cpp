@@ -4,7 +4,6 @@
 using namespace std;
 
 int main() {
-
   cout << "====================== Question 1 ======================" << endl << endl;
 
   cout << "The frequency of the word 'a' in the corpus is " << frequency("a") << endl;
@@ -56,7 +55,7 @@ int main() {
   corrected = spell_correct("nonexistential", fixed);
   cout << "The corrected spelling of 'nonexistential' is '"<< fixed << "'" << endl;
   cout << "The spell checker was " << (corrected ? "" : "NOT ") << "needed."<< endl <<endl;
-  /*  
+   
   cout << "=================== Bonus Question =====================" << endl << endl;
   cout << "The edit distance between 'an' and 'na' is " << edit_distance_bonus("an","na") << endl;
 
@@ -72,7 +71,7 @@ int main() {
 
   cout << "The edit distance between 'nonexistential' and 'nonexistent' is " << edit_distance_bonus("nonexistential","nonexistent") << endl;
 
-  */
+  
   
   return 0;
 }
