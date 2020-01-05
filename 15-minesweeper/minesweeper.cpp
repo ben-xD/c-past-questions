@@ -160,21 +160,19 @@ bool find_safe_move(char revealed[9][9], char* move) {
   // iterate over each cell:
   for (int row = 0; row < 9; row++) {
     for (int col = 0; col < 9; col++) {
-      if (!(revealed[row][col] >= '1' && revealed[row][col] <= '9')) {
+      if (!(revealed[row][col] >= '1' && revealed[row][col] < '9')) {
         continue; // only work with numbers
       }
       int mine_count = count_mines(row, col, revealed);
-      int unknown_count = count_mines(row, col, revealed, '?') - 1; // not including current
-      int revealed_count = count_mines(row, col, revealed, ' ');
+      int unknown_count = count_mines(row, col, revealed, '?');
+      int revealed_count = revealed[row][col] - '0';
 
-// TODO fix this logic:
-      // if #revealed == #?'s, then they're all mines. Flag 1 of them, return
-      if (revealed_count == unknown_count) {
+      // If all  == unknowns count. Flag 1 of them, return
+      if (revealed_count - mine_count == unknown_count) {
         // find one ?, and set flag.
         for (int r = row-1; r <= row+1; r++) {
           for (int c = col-1; c <= col+1; c++) {
-            if (revealed[r][c] == '?') {
-              std::cout << row << col << " vs " << r << c << std::endl;
+            if (in_boundary(r,c) && revealed[r][c] == '?') {
               move[0] = r + 'A';
               move[1] = c + '1';
               move[2] = '*';
@@ -186,19 +184,19 @@ bool find_safe_move(char revealed[9][9], char* move) {
       }
 
       // if #displayed == #mines visible, then reveal any surrounding question mark, return
-      // if (revealed[row][col] - '0' == mine_count) {
-      //   // find one question mark, and set move to it (without *)
-      //   for (int r = row-1; r <= row+1; r++) {
-      //     for (int c = col-1; c <= col+1; c++) {
-      //       if (revealed[r][c] == '?') {
-      //         move[0] = r + 'A';
-      //         move[1] = c + '1';
-      //         move[2] = '\0';
-      //         return true;
-      //       }
-      //     }
-      //   }
-      // }
+      if (revealed_count == mine_count) {
+        // find one question mark, and set move to it (without *)
+        for (int r = row-1; r <= row+1; r++) {
+          for (int c = col-1; c <= col+1; c++) {
+            if (in_boundary(r,c) && revealed[r][c] == '?') {
+              move[0] = r + 'A';
+              move[1] = c + '1';
+              move[2] = '\0';
+              return true;
+            }
+          }
+        }
+      }
       
       // add more rules?
     }
