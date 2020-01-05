@@ -78,7 +78,7 @@ int main() {
 
   load_board("mines.dat", mines);
   initialise_board(revealed);
-  display_board(revealed);
+  // display_board(revealed);
   
   /* valid move */
   cout << "Making move 'B6' results in:" << endl;
@@ -109,15 +109,18 @@ int main() {
 
   load_board("mines.dat", mines);
   load_board("partial.dat", revealed);
-  display_board(revealed);
+  // display_board(revealed);
   
   cout << "Safe move sequence: " << endl;
   char move[512];
+  find_safe_move(revealed, move);
   while (find_safe_move(revealed, move)) {
     cout << move << " ";
     make_move(move, mines, revealed);
   }
   cout << endl;
+  display_board(revealed);
+
 
   /*  
   cout << "=================== Bonus Question =====================" << endl << endl;

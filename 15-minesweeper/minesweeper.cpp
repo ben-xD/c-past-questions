@@ -65,5 +65,146 @@ void initialise_board(char board[9][9]) {
       board[r][c] = '?';
 }
 
-/* add your functions here */
+bool is_complete(const char board[9][9], const char revealed[9][9]){
+  // if '.' in board and '?' in revealed, return false
+  for (int row = 0; row < 9; row++) {
+    for (int col = 0; col < 9; col++) {
+      if (board[row][col] == '.' && revealed[row][col] == '?') {
+        return false;
+      }
+    }
+  }
+  return true;
+}
 
+int count_mines(const char* position, const char board[9][9]) {
+  int row = position[0] - 'A';
+  int col = position[1] - '1';
+  return count_mines(row, col, board);
+}
+
+int count_mines(int pos_row, int pos_col, const char board[9][9], char character) {
+  int count = 0;
+  for (int row = pos_row - 1; row <= pos_row + 1; row++) {
+    for (int col = pos_col - 1; col <= pos_col + 1; col++) {
+      if (in_boundary(row, col) && board[row][col] == character) {
+        count++;
+      }
+    }
+  }
+  return count;
+}
+
+MoveResult make_move(const char* position, const char mines[9][9], char revealed[9][9]) {
+  if (strlen(position) > 2 && position[2] != '*') {
+    return INVALID_MOVE;
+  }
+
+  int row = position[0] - 'A';
+  int col = position[1] - '1';
+  if (!in_boundary(row, col)) {
+    return INVALID_MOVE;
+  }
+
+  if (revealed[row][col] != '?') {
+    return REDUNDANT_MOVE;
+  }
+
+  if (strlen(position) == 3) {
+    revealed[row][col] = '*';
+    return VALID_MOVE;
+  }
+
+  if (mines[row][col] == '*') {
+    return BLOWN_UP;
+  }
+
+  make_move(row, col, mines, revealed);
+  if (is_complete(mines, revealed)) {
+    return SOLVED_BOARD;
+  }
+  return VALID_MOVE;
+}
+
+void make_move(int row, int col, const char mines[9][9], char revealed[9][9]) {
+  if (mines[row][col] == '*') {
+    return; // do nothing if mine
+  }
+
+  int mine_count = count_mines(row, col, mines);
+
+  // if mines > 0, display in revealed
+  if (mine_count != 0) {
+    revealed[row][col] = mine_count + '0';
+    return;
+  }
+
+  revealed[row][col] = ' ';
+  // if 0, recursively call surrounding squares
+  for (int row_ = row - 1; row_ <= row + 1; row_++) {
+    for (int col_ = col - 1; col_ <= col + 1; col_++) {
+      if (in_boundary(row_, col_) && revealed[row_][col_] == '?') {
+        make_move(row_, col_, mines, revealed);
+      }
+    }
+  }
+  return;
+}
+
+bool in_boundary(int row, int col) {
+  return row >= 0 && row < 9 && col >= 0 && col < 9;
+}
+
+// uncover OR flag move safely
+bool find_safe_move(char revealed[9][9], char* move) {
+  // iterate over each cell:
+  for (int row = 0; row < 9; row++) {
+    for (int col = 0; col < 9; col++) {
+      if (!(revealed[row][col] >= '1' && revealed[row][col] <= '9')) {
+        continue; // only work with numbers
+      }
+      int mine_count = count_mines(row, col, revealed);
+      int unknown_count = count_mines(row, col, revealed, '?') - 1; // not including current
+      int revealed_count = count_mines(row, col, revealed, ' ');
+
+// TODO fix this logic:
+      // if #revealed == #?'s, then they're all mines. Flag 1 of them, return
+      if (revealed_count == unknown_count) {
+        // find one ?, and set flag.
+        for (int r = row-1; r <= row+1; r++) {
+          for (int c = col-1; c <= col+1; c++) {
+            if (revealed[r][c] == '?') {
+              std::cout << row << col << " vs " << r << c << std::endl;
+              move[0] = r + 'A';
+              move[1] = c + '1';
+              move[2] = '*';
+              move[3] = '\0';
+              return true;
+            }
+          }
+        }
+      }
+
+      // if #displayed == #mines visible, then reveal any surrounding question mark, return
+      // if (revealed[row][col] - '0' == mine_count) {
+      //   // find one question mark, and set move to it (without *)
+      //   for (int r = row-1; r <= row+1; r++) {
+      //     for (int c = col-1; c <= col+1; c++) {
+      //       if (revealed[r][c] == '?') {
+      //         move[0] = r + 'A';
+      //         move[1] = c + '1';
+      //         move[2] = '\0';
+      //         return true;
+      //       }
+      //     }
+      //   }
+      // }
+      
+      // add more rules?
+    }
+  }
+  
+  // nothing found
+  strcpy(move, "");
+  return false;
+}
