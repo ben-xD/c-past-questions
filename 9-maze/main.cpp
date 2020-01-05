@@ -72,39 +72,39 @@ int main() {
 
   deallocate_2D_array(maze, height);
   
-  cout << "=================== Bonus Question =====================" << endl << endl;
+  // cout << "=================== Bonus Question =====================" << endl << endl;
 
-  /* find the path from the entrance to the middle of the Hatfield House maze */
-  maze = load_maze("hatfield.txt", height, width);
-  assert(maze);
+  // /* find the path from the entrance to the middle of the Hatfield House maze */
+  // maze = load_maze("hatfield.txt", height, width);
+  // assert(maze);
 
-  cout << "And now the Hatfield House maze:" << endl;
-  print_maze(maze, height, width);
-  cout << endl;
+  // cout << "And now the Hatfield House maze:" << endl;
+  // print_maze(maze, height, width);
+  // cout << endl;
   
-  cout << "A path through the maze from '>' to 'M' is: " << endl;
-  cout << find_path(maze, height, width, '>', 'M') << endl << endl;
+  // cout << "A path through the maze from '>' to 'M' is: " << endl;
+  // cout << find_path(maze, height, width, '>', 'M') << endl << endl;
 
-  cout << "The path is shown below: " << endl;
-  print_maze(maze, height, width);
-  cout << endl;
+  // cout << "The path is shown below: " << endl;
+  // print_maze(maze, height, width);
+  // cout << endl;
 
-  deallocate_2D_array(maze, height);
+  // deallocate_2D_array(maze, height);
 
   /* find the path from the middle to the exit of the Hatfield House maze */
-  maze = load_maze("hatfield.txt", height, width);
-  assert(maze);
+  // maze = load_maze("hatfield.txt", height, width);
+  // assert(maze);
 
-  cout << "A path through the maze from 'M' to 'X' is: " << endl;
-  cout << find_path(maze, height, width, 'M', 'X') << endl << endl;
+  // cout << "A path through the maze from 'M' to 'X' is: " << endl;
+  // cout << find_path(maze, height, width, 'M', 'X') << endl << endl;
   
-  cout << "The path is shown below: " << endl;
-  print_maze(maze, height, width);
-  cout << endl;
+  // cout << "The path is shown below: " << endl;
+  // print_maze(maze, height, width);
+  // cout << endl;
   
-  deallocate_2D_array(maze, height);
+  // deallocate_2D_array(maze, height);
 
-  cout << "======================= The End ========================" << endl << endl;
+  // cout << "======================= The End ========================" << endl << endl;
 
   return 0;
 }

@@ -2,7 +2,10 @@
 #include <iomanip>
 #include <fstream>
 #include <cassert>
+#include <string>
 #include <cstring>
+
+#include "maze.h"
 
 using namespace std;
 
@@ -93,3 +96,120 @@ void print_maze(char **m, int height, int width) {
   }
 }
 
+bool find_marker(char ch, char** maze, int height, int width, int& row, int& col) {
+  for (row = 0; row < height; row++) {
+    for (col = 0; col < width; col++) {
+      if (maze[row][col] == ch) {
+        return true;
+      }
+    }
+  }
+  row = -1;
+  col = -1;
+  return false;
+}
+
+bool valid_solution(const char* path, char** maze, int height, int width) {
+  // get initial start pos
+  int row, col;
+  if (!find_marker('>', maze, height, width, row, col)){
+    return false;
+  };
+
+  row += get_row_delta(*path);
+  col += get_col_delta(*path);
+  path++;
+
+  while (*path != '\0') {
+    // calculate new position
+    row += get_row_delta(*path);
+    col += get_col_delta(*path);
+
+    // check oob
+    if (row < 0 || row >= height || col < 0 || col >= width) {
+      return false;
+    }
+
+    if (maze[row][col] == 'X') {
+      return true;
+    }
+
+    // check that new position is empty.
+    if (maze[row][col] != ' ') {
+      return false;
+    }
+
+    path++;
+  }
+
+  return false;
+}
+
+int get_row_delta(char ch) {
+  switch(ch) {
+    case 'N':
+      return -1;
+    case 'S':
+      return 1;
+    default:
+      return 0;
+  }
+}
+
+int get_col_delta(char ch) {
+  switch(ch) {
+    case 'E':
+      return 1;
+    case 'W':
+      return -1;
+    default:
+      return 0;
+  }
+}
+
+std::string find_path(char** maze, int height, int width, char start, char end) {
+  int row, col;
+  find_marker(start, maze, height, width, row, col);
+  maze[row][col] = ' ';
+
+  std::string path;
+  if (!find_path(maze, height, width, row, col, end, path)) {
+    path = "no solution";
+  }
+  return path;
+}
+
+bool find_path(char** maze, int height, int width, int row, int col, char end, std::string& path) {
+  if (row < 0 || row >= height || col < 0 || col >= width) {
+    return false;
+  }
+  if (maze[row][col] == end) {
+    maze[row][col] = '#';
+    return true;
+  }
+  if (maze[row][col] != ' ') {
+    return false;
+  }
+
+  maze[row][col] = '#';
+
+  // try north, south, east, west individually in series. if 1 succeeds, return with path
+  if (find_path(maze, height, width, row-1, col, end, path)) {
+    path += "N";
+    return true;
+  }
+  if (find_path(maze, height, width, row+1, col, end, path)) {
+    path += "S";
+    return true;
+  }
+  if (find_path(maze, height, width, row, col+1, end, path)) {
+    path += "E";
+    return true;
+  } 
+  if (find_path(maze, height, width, row, col-1, end, path)) {
+    path += "W";
+    return true;
+  }
+  maze[row][col] = ' ';
+  return false;
+}
