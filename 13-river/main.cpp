@@ -14,7 +14,7 @@ int main() {
   cout << "Breakfast time!" << endl;
   char **scene = create_scene();
   add_to_scene(scene, 2, 24, "sun.txt");
-  add_to_scene(scene,14, 45, "cannibal.txt");
+  add_to_scene(scene, 14, 45, "cannibal.txt");
   add_to_scene(scene,14,  9, "cannibal.txt");
   add_to_scene(scene, 8, 25, "missionary.txt");
   add_to_scene(scene, 8, 30, "missionary.txt");
@@ -43,20 +43,20 @@ int main() {
   cout << status_description(result) << endl << endl;
   cout << "After crossing left = " << left << endl;
 
-  cout << "====================== Question 3 ======================" << endl << endl;
+  // cout << "====================== Question 3 ======================" << endl << endl;
 
   result = play_game();
 
   cout << "The game ended as follows: " << status_description(result) << endl;
 
-  cout << "=================== Bonus Challenge ====================" << endl << endl;
+  // cout << "=================== Bonus Challenge ====================" << endl << endl;
 
-  char answer[512];
-  strcpy(left, "MMMCCCB");
-  if (find_solution(left, answer)==VALID_GOAL_STATE)
-    cout << "Solution is " << answer << endl;
-  else
-    cout << "Solution does not exist." << endl;
+  // char answer[512];
+  // strcpy(left, "MMMCCCB");
+  // if (find_solution(left, answer)==VALID_GOAL_STATE)
+  //   cout << "Solution is " << answer << endl;
+  // else
+  //   cout << "Solution does not exist." << endl;
 
   return 0;
 }

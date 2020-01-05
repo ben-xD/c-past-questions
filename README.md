@@ -1,6 +1,8 @@
 # c-past-questions
 C past papers and other practice questions at Imperial. 
 
+Want starter files? Login to a IC machine (ssh user@shell1.doc.ic.ac.uk), then `cd ~wjk/public_html/C++Intro/`, then find the files in project folers e.g. `cd river`
+
 e.g. Spell checker mock test done on 10/12/2019. All unassessed coursework questions complete (Except Braille).
 
 ## Notable/ difficult questions:

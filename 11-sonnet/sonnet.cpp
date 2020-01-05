@@ -4,6 +4,7 @@
 #include <cassert>
 #include <map>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -90,3 +91,48 @@ char rhyming_letter(const char *ending) {
 }
 
 /* START WRITING YOUR FUNCTION BODIES HERE */
+int count_words(const char* line) {
+  int count = 1;
+  char output[100];
+  while (get_word(line, count, output)) {
+    count++;
+  }
+  return count-1;
+}
+
+bool find_phonetic_ending(const char* word, char* ending) {
+  // open file, iterate line by line for word
+  std::ifstream file;
+  file.open("dictionary.txt");
+  char* readline = new char[strlen(word)];
+  char line[100];
+  while(file.good()) {
+    file.read(line, 100);
+    strncpy(readline, line, strlen(word));
+    if (!strcmp(readline, word)) {
+      // find index of last vowel
+      int last_vowel_index = get_last_vowel_index(line);
+      
+      // return string from last vowel to end
+      // TODO remove white space
+      strcpy(ending, line+last_vowel_index);
+      return true;
+    }
+  }
+  return false;
+}
+
+int get_last_vowel_index(const char* line) {
+  int vowel_index;
+  int length = strlen(line);
+  for (int i = 0; i < length; i++) {
+    if (is_vowel(line[i])) {
+      vowel_index = i;
+    }
+  }
+  return vowel_index;
+}
+
+bool is_vowel(char c) {
+  return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+}
