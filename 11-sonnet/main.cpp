@@ -66,22 +66,26 @@ int main() {
   find_phonetic_ending("PAUSE", phonetics);
   cout << "PAUSE has phonetic ending " << phonetics << endl;
 
+  std::cout << find_phonetic_ending("TEMPERATE", phonetics);
+  cout << "TEMPERATE has phonetic ending " << phonetics << endl;
+  
+
   cout << endl;
 
-  // // Question 3
-  // cout << "====================== Question 3 ======================" << endl << endl;
+  // Question 3
+  cout << "====================== Question 3 ======================" << endl << endl;
 
-  // char scheme[512];
-  // find_rhyme_scheme("shakespeare.txt", scheme);
-  // cout << "The rhyme scheme of shakespeare.txt is " << scheme << endl;
+  char scheme[512];
+  find_rhyme_scheme("shakespeare.txt", scheme);
+  cout << "The rhyme scheme of shakespeare.txt is " << scheme << endl;
 
-  // find_rhyme_scheme("petrarch.txt", scheme);
-  // cout << "The rhyme scheme of petrarch.txt is " << scheme << endl;
+  find_rhyme_scheme("petrarch.txt", scheme);
+  cout << "The rhyme scheme of petrarch.txt is " << scheme << endl;
 
-  // find_rhyme_scheme("spenser.txt", scheme);
-  // cout << "The rhyme scheme of spenser.txt is " << scheme << endl;
+  find_rhyme_scheme("spenser.txt", scheme);
+  cout << "The rhyme scheme of spenser.txt is " << scheme << endl;
 
-  // cout << endl;
+  cout << endl;
 
   // // Question 4
   // cout << "====================== Question 4 ======================" << endl << endl;

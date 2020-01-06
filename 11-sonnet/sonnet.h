@@ -24,4 +24,5 @@ int count_words(const char* line);
 bool find_phonetic_ending(const char* word, char* ending);
 
 bool is_vowel(char c);
-int get_last_vowel_index(const char* line);
+bool word_contains_vowel(const char* word);
+bool find_rhyme_scheme(const char* filename, char* scheme);

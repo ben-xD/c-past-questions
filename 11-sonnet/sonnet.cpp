@@ -104,35 +104,88 @@ bool find_phonetic_ending(const char* word, char* ending) {
   // open file, iterate line by line for word
   std::ifstream file;
   file.open("dictionary.txt");
-  char* readline = new char[strlen(word)];
-  char line[100];
-  while(file.good()) {
-    file.read(line, 100);
-    strncpy(readline, line, strlen(word));
-    if (!strcmp(readline, word)) {
-      // find index of last vowel
-      int last_vowel_index = get_last_vowel_index(line);
-      
-      // return string from last vowel to end
-      // TODO remove white space
-      strcpy(ending, line+last_vowel_index);
+  *ending='\0';
+
+    // initial set to 100, but supercalifragislistic... is 114. 
+    // this line was found using `awk '{print length, $0}' dictionary.txt |sort -nr|head -1`
+  char line[200];
+  while(!file.fail()) {
+    file.getline(line, 200);
+    // check first word is word.
+    char first_word[200];
+    get_word(line, 1, first_word);
+    if (strcmp(word, first_word)) {
+      continue; // not the same word.
+    }
+
+    int count = count_words(line);
+    // Get last vowel phoneme
+    int last_vowel_phoneme = 0;
+    char phoneme[100];
+    for (last_vowel_phoneme = count; last_vowel_phoneme > 0; last_vowel_phoneme--) {
+      get_word(line, last_vowel_phoneme, phoneme);
+      if (word_contains_vowel(phoneme)) {
+        break;
+      }
+    }
+
+    // Save all phonemes after last_vowel_phoneme, inclusive
+    while (last_vowel_phoneme <= count) {
+      get_word(line, last_vowel_phoneme, phoneme);
+      strcat(ending, phoneme);
+      last_vowel_phoneme++;
+    }
+
+    return true;
+  }
+  return false;
+}
+
+bool word_contains_vowel(const char* word) {
+  for (size_t i = 0; i < strlen(word); i++) {
+    if (is_vowel(word[i])) {
       return true;
     }
   }
   return false;
 }
 
-int get_last_vowel_index(const char* line) {
-  int vowel_index;
-  int length = strlen(line);
-  for (int i = 0; i < length; i++) {
-    if (is_vowel(line[i])) {
-      vowel_index = i;
-    }
-  }
-  return vowel_index;
+bool is_vowel(char c) {
+  return c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U';
 }
 
-bool is_vowel(char c) {
-  return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+bool find_rhyme_scheme(const char* filename, char* scheme) {
+  std::ifstream file;
+  file.open(filename);
+  if (!file.good()) {
+    return false;
+  }
+
+  *scheme = '\0';
+  rhyming_letter(RESET);
+  char line[512];
+
+  while (file.good()) {
+    file.getline(line, 512);
+    // count words
+    int count = count_words(line);
+    // get last word 
+    char last_word[512];
+    get_word(line, count, last_word);
+    if (strlen(last_word) == 0) {
+      continue;
+    }
+
+    // find phonetic ending for line in file
+    char ending[512];
+    find_phonetic_ending(last_word, ending);
+    
+    // save
+    char letter[2];
+    letter[0] = rhyming_letter(ending);
+    letter[1] = '\0';
+    strcat(scheme, letter);
+  }
+
+  return true;
 }
