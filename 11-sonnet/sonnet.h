@@ -26,3 +26,4 @@ bool find_phonetic_ending(const char* word, char* ending);
 bool is_vowel(char c);
 bool word_contains_vowel(const char* word);
 bool find_rhyme_scheme(const char* filename, char* scheme);
+const char* identify_sonnet(const char* filename);

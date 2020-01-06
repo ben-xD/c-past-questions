@@ -189,3 +189,18 @@ bool find_rhyme_scheme(const char* filename, char* scheme) {
 
   return true;
 }
+
+const char* identify_sonnet(const char* filename) {
+  char* scheme = new char[200];
+  find_rhyme_scheme(filename, scheme);
+  if (!strcmp(scheme, "ababcdcdefefgg")) {
+    strcpy(scheme, "Shakespearean");
+  } else if (!strcmp(scheme, "abbaabbacdcdcd")) {
+    strcpy(scheme, "Petrarchan");
+  } else if (!strcmp(scheme, "ababbcbccdcdee")) {
+    strcpy(scheme, "Spenserian");
+  } else {
+    strcpy(scheme, "Unknown");
+  }
+  return scheme;
+}

@@ -87,18 +87,18 @@ int main() {
 
   cout << endl;
 
-  // // Question 4
-  // cout << "====================== Question 4 ======================" << endl << endl;
+  // Question 4
+  cout << "====================== Question 4 ======================" << endl << endl;
 
-  // cout << "The sonnet spenser.txt is a(n) " << 
-  //   identify_sonnet("spenser.txt") << " sonnet" << endl;
+  cout << "The sonnet spenser.txt is a(n) " << 
+    identify_sonnet("spenser.txt") << " sonnet" << endl;
 
-  // cout << "The sonnet mystery.txt is a(n) " << 
-  //   identify_sonnet("mystery.txt") << " sonnet" << endl;
+  cout << "The sonnet mystery.txt is a(n) " << 
+    identify_sonnet("mystery.txt") << " sonnet" << endl;
 
-  // cout << endl;
+  cout << endl;
 
-  // cout << "======================= The End ========================" << endl << endl;
+  cout << "======================= The End ========================" << endl << endl;
 
   return 0;
 }
