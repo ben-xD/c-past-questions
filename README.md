@@ -6,6 +6,9 @@ Want starter files? Login to a IC machine (ssh user@shell1.doc.ic.ac.uk), then `
 Or alternatively, to use sftp to download all the files:
 `sftp user@shell1.doc.ic.ac.uk`, then `cd /homes/wjk/public_html/C++Intro`, then `get -r sonnet`
 
+## Want to contribute?
+Either fork the repo and share it with others, or write new questions (e.g. scrabble and create a PR! Now that's some git practice for MSc students. )
+
 ## Notable questions:
 - Stamp: Loading in an entire file to be hashed: I had to google it: using file.seekg(0, file.end), file.tellg, file.seekg(0, file.beg), char* contents = new char[file_size], file.read(contents, file_size). 
 - Tube: lots of logic in Q3, so little time
@@ -16,7 +19,7 @@ Or alternatively, to use sftp to download all the files:
   - Tokenizing sentences/ strings into substring with strtok(sentence, " "), strtok(NULL, sentence) while token != NULL.
 - Doublets: Q4 of doublets has performance requirements, especially reaching 12 steps for find_chain()
 
-## Relatively easy questions
+## Relatively easy questions
 - Maze
 - Playfair
 - Minesweeper (apart from some recursion logic at the end)
