@@ -1,5 +1,5 @@
 # c-past-questions
-C past papers and other practice questions at Imperial. 
+C past papers and other practice questions at Imperial. I didn't look at other peoples code when first attempting these. Attempt the questions first, and only have a look if you're blocked.
 
 Want starter files? Login to a IC machine (ssh user@shell1.doc.ic.ac.uk), then `cd ~wjk/public_html/C++Intro/`, then find the files in project folers e.g. `cd river`
 
